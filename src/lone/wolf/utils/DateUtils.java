@@ -2,6 +2,7 @@ package lone.wolf.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -13,13 +14,6 @@ import java.util.GregorianCalendar;
  * @ModifyBy:
  */
 public class DateUtils {
-
-    private static Date currentdate;
-
-    static {
-        currentdate = new Date();//获取当前系统时间
-
-    }
 
     /**
      * 时间类型yyyy-MM-dd HH:mm:ss
@@ -38,7 +32,8 @@ public class DateUtils {
      */
     public static String getDateFullTime(String pattern) {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-        String fullTime = sdf.format(currentdate);
+        Date currentDate = new Date();
+        String fullTime = sdf.format(currentDate);
         return fullTime;
     }
 
@@ -85,7 +80,8 @@ public class DateUtils {
         if (nowTime != null) {
             nowDate = sdf.format(nowTime);
         } else {
-            nowDate = sdf.format(currentdate);
+            Date currentDate = new Date();
+            nowDate = sdf.format(currentDate);
 
         }
         Date now = null;
@@ -158,27 +154,46 @@ public class DateUtils {
         return days;
     }
 
-    public static void main(String[] args) throws ParseException {
-        String day = DateUtils.MontgAgo(null, -30, DateUtils.DATE, Calendar.DATE);
-        String month = DateUtils.MontgAgo(null, 3, DateUtils.DATE, Calendar.MONTH);
-        String year = DateUtils.MontgAgo(null, 3, DateUtils.DATE, Calendar.YEAR);
-        String hour = DateUtils.MontgAgo(null, 3, DateUtils.DATE_FULL_TIME, Calendar.HOUR);
-        String minute = DateUtils.MontgAgo(null, 3, DateUtils.DATE_FULL_TIME, Calendar.MINUTE);
-        String second = DateUtils.MontgAgo(null, 3, DateUtils.DATE_FULL_TIME, Calendar.SECOND);
-        System.out.println(year);
-        System.out.println(month);
-        System.out.println(day);
-        System.out.println(hour);
-        System.out.println(minute);
-        System.out.println(second);
-        System.out.println("========================================================");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date1 = new Date();
-        Date date2 = sdf.parse("2017-11-20 20:20:20");
-        int last = getBetweenDay(date1, date2);
-        int before = getBetweenDay(date2, date1);
-        System.out.println("今天在 2017-11-20 20:20:20 " + last + "天之前");
-        System.out.println("2017-11-20 20:20:20在" + Math.abs(before) + "天之后");
+    /**
+     * 获取输入日期到日期月份月底所剩的天数
+     *
+     * @param date
+     * @return 输入日期里所在月份月底剩余的天数
+     */
+    public static int getNumForDateToLastDay(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int daysNum = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int dateOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        System.out.println("这个月天数" + daysNum);
+        System.out.println("日期所在的天数" + dateOfMonth);
+        return daysNum - dateOfMonth;
+    }
+
+    /**
+     * 输入日期到月头的天数
+     *
+     * @param date
+     * @return 输入日期是这个月的第几天
+     */
+    public static int numDayOfMonth(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int num = calendar.get(Calendar.DAY_OF_MONTH);
+        return num;
+    }
+
+    /**
+     * 指定日期所在月份有几天
+     *
+     * @param date
+     * @return 天数
+     */
+    public static int getDayNumForDate(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int daysNum = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        return daysNum;
     }
 
     /**
@@ -225,5 +240,43 @@ public class DateUtils {
                 break;
         }
     }
+
+
+    public static void main(String[] args) throws ParseException {
+      /*  String day = DateUtils.MontgAgo(null, -30, DateUtils.DATE, Calendar.DATE);
+        String month = DateUtils.MontgAgo(null, 3, DateUtils.DATE, Calendar.MONTH);
+        String year = DateUtils.MontgAgo(null, 3, DateUtils.DATE, Calendar.YEAR);
+        String hour = DateUtils.MontgAgo(null, 3, DateUtils.DATE_FULL_TIME, Calendar.HOUR);
+        String minute = DateUtils.MontgAgo(null, 3, DateUtils.DATE_FULL_TIME, Calendar.MINUTE);
+        String second = DateUtils.MontgAgo(null, 3, DateUtils.DATE_FULL_TIME, Calendar.SECOND);
+        System.out.println(year);
+        System.out.println(month);
+        System.out.println(day);
+        System.out.println(hour);
+        System.out.println(minute);
+        System.out.println(second);
+        System.out.println("========================================================");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date1 = new Date();
+        Date date2 = sdf.parse("2017-11-20 20:20:20");
+        int last = getBetweenDay(date1, date2);
+        int before = getBetweenDay(date2, date1);
+        System.out.println("今天在 2017-11-20 20:20:20 " + last + "天之前");
+        System.out.println("2017-11-20 20:20:20在" + Math.abs(before) + "天之后");*/
+
+        String str1 = "20120202";
+        String str2 = "20190531";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        Date date1 = sdf.parse(str1);
+        Date date2 = sdf.parse(str2);
+      /*  int betweenDay = getBetweenDay(date1, date2);
+        System.out.println(betweenDay);
+        System.out.println(getDayNumForDate(date1));
+        System.out.println(getDayNumForDate(date2));*/
+        System.out.println(numDayOfMonth(date1));
+
+
+    }
+
 
 }

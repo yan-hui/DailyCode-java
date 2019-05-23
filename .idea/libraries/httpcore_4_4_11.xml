@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="org.slf4j">
+  <library name="httpcore-4.4.11">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/bin/org.slf4j.jar!/" />
+      <root url="jar://$PROJECT_DIR$/bin/httpcore-4.4.11.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

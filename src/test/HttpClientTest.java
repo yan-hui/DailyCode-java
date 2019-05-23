@@ -1,7 +1,6 @@
 package test;
 
 import lone.wolf.utils.HttpRequestUtil;
-import net.sf.json.JSONObject;
 import org.junit.Test;
 
 import java.util.HashMap;
