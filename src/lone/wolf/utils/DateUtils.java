@@ -2,7 +2,6 @@ package lone.wolf.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -23,14 +22,38 @@ public class DateUtils {
      * 时间类型yyyy-MM-dd
      */
     public final static String DATE = "yyyy-MM-dd";
+    /**
+     * 时间格式yyyyMMdd
+     */
+    public final static String DATE_YYYYMMDD = "yyyyMMdd";
+    /**
+     * 年月，时间格式yyyy-MM
+     */
+    public final static String DATE_YYYY_MM = "yyyy-MMM";
+    /**
+     * 年月，时间格式yyyyMM
+     */
+    public final static String DATE_FOR_YEARMONTH = "yyyyMM";
+    /**
+     * 月日，时间格式MM-dd
+     */
+    public final static String DATE_FOR_MONTH_DAY = "MM-dd";
+    /**
+     * 月日，时间格式MMdd
+     */
+    public final static String DATE_FOR_MONTHDAY = "MMdd";
+    /**
+     * 日，时间格式dd
+     */
+    public final static String DATE_FOR_DAY = "dd";
 
 
     /**
-     * 获取当前系统时间的日期字符串yyyy-MM-dd HH:mm:ss
+     * 获取当前系统时间的日期字符串
      *
      * @return
      */
-    public static String getDateFullTime(String pattern) {
+    public static String getNow(String pattern) {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         Date currentDate = new Date();
         String fullTime = sdf.format(currentDate);
@@ -38,17 +61,37 @@ public class DateUtils {
     }
 
     /**
-     * 获取时间的字符串yyyy-MM-dd HH:mm:ss
+     * 格式化制定时间
      *
-     * @param date    需要转换的时间
-     * @param pattern 转换的格式
+     * @param date    日期时间
+     * @param pattren 格式化规则
      * @return
      */
-    public static String getStringDate(Date date, String pattern) {
-        SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-        String stringDate = sdf.format(date);
-        return stringDate;
+    public static String getDate(Date date, String pattren) {
+        if (null == pattren) {
+            return null;
+        }
+        SimpleDateFormat format = new SimpleDateFormat(pattren);
+        String dateStr = format.format(date);
+        return dateStr;
     }
+
+    /**
+     * 将字符串转换成时间
+     *
+     * @param dateStr 时间字符串
+     * @param pattren 格式化规则
+     * @return
+     */
+    public static Date getDateStr(String dateStr, String pattren) throws ParseException {
+        if (null == pattren) {
+            return null;
+        }
+        SimpleDateFormat format = new SimpleDateFormat(pattren);
+        Date date = format.parse(dateStr);
+        return date;
+    }
+
 
     /**
      * Long的时间转String
@@ -69,12 +112,12 @@ public class DateUtils {
      * 距离多少个时间的日期，传正整数3,表示3年/月/日 后的日期，负数则表示多久之前的日期
      *
      * @param nowTime      传入的时间,当前系统时间传null
-     * @param renewalsData 多少月前使用负数，几个月后使用正数 例如，3 月前 -3，三月后
+     * @param renewalsData 多少年/月/日前使用负数，几年/月/日后使用正数 例如，3 月前 -3，三月后
      * @param pattern      转换格式
-     * @param CalendarType 特定于日历的值  Calendar.MONTH、Calendar.YEAR等
+     * @param CalendarType 特定于日历的值，分为年月日时分秒  Calendar.MONTH、Calendar.YEAR等
      * @return 指定时间前/后多久的时间
      */
-    public static String MontgAgo(Date nowTime, int renewalsData, String pattern, int CalendarType) {
+    public static String getDateAfterAddDays(Date nowTime, int renewalsData, String pattern, int CalendarType) {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         String nowDate;
         if (nowTime != null) {
@@ -176,7 +219,7 @@ public class DateUtils {
      * @param date
      * @return 输入日期是这个月的第几天
      */
-    public static int numDayOfMonth(Date date) {
+    public static int getNumDayOfMonth(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         int num = calendar.get(Calendar.DAY_OF_MONTH);
@@ -202,7 +245,7 @@ public class DateUtils {
      * @param day     时间
      * @param pattern 转换格式
      */
-    public static void dayOfWeek(String day, String pattern) {
+    public static String getDayOfWeek(String day, String pattern) {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
         Date date = new Date();
@@ -213,67 +256,94 @@ public class DateUtils {
         }
         calendar.setTime(date);
         int currDay = calendar.get(Calendar.DAY_OF_WEEK);
+        String week =null;
         switch (currDay) {
             case 1:
                 System.out.println(day + " 是星期日");
+                week="星期日";
                 break;
             case 2:
                 System.out.println(day + " 是星期一");
+                week="星期一";
                 break;
             case 3:
                 System.out.println(day + " 是星期二");
+                week="星期二";
                 break;
             case 4:
                 System.out.println(day + " 是星期三");
+                week="星期三";
                 break;
             case 5:
                 System.out.println(day + " 是星期四");
+                week="星期四";
                 break;
             case 6:
+                week="星期五";
                 System.out.println(day + " 是星期五");
                 break;
             case 7:
+                week="星期六";
                 System.out.println(day + " 是星期六");
                 break;
 
             default:
                 break;
         }
+        return week;
     }
 
 
     public static void main(String[] args) throws ParseException {
-      /*  String day = DateUtils.MontgAgo(null, -30, DateUtils.DATE, Calendar.DATE);
-        String month = DateUtils.MontgAgo(null, 3, DateUtils.DATE, Calendar.MONTH);
-        String year = DateUtils.MontgAgo(null, 3, DateUtils.DATE, Calendar.YEAR);
-        String hour = DateUtils.MontgAgo(null, 3, DateUtils.DATE_FULL_TIME, Calendar.HOUR);
-        String minute = DateUtils.MontgAgo(null, 3, DateUtils.DATE_FULL_TIME, Calendar.MINUTE);
-        String second = DateUtils.MontgAgo(null, 3, DateUtils.DATE_FULL_TIME, Calendar.SECOND);
-        System.out.println(year);
-        System.out.println(month);
-        System.out.println(day);
-        System.out.println(hour);
-        System.out.println(minute);
-        System.out.println(second);
-        System.out.println("========================================================");
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date1 = new Date();
-        Date date2 = sdf.parse("2017-11-20 20:20:20");
-        int last = getBetweenDay(date1, date2);
-        int before = getBetweenDay(date2, date1);
-        System.out.println("今天在 2017-11-20 20:20:20 " + last + "天之前");
-        System.out.println("2017-11-20 20:20:20在" + Math.abs(before) + "天之后");*/
 
-        String str1 = "20120202";
-        String str2 = "20190531";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-        Date date1 = sdf.parse(str1);
-        Date date2 = sdf.parse(str2);
-      /*  int betweenDay = getBetweenDay(date1, date2);
-        System.out.println(betweenDay);
-        System.out.println(getDayNumForDate(date1));
-        System.out.println(getDayNumForDate(date2));*/
-        System.out.println(numDayOfMonth(date1));
+        String now = getNow(DATE_YYYYMMDD);
+        System.out.println("getNow(): " + now);
+        String str1 = "20160201";
+        String str2 = "20160501";
+
+        Date date1 = getDateStr(str1, DATE_YYYYMMDD);
+        Date date2 = getDateStr(str2, DATE_YYYYMMDD);
+        System.out.println("getDateStr(): " + date1);
+        System.out.println("getDateStr(): " + date2);
+
+        String dateStr1 = getDate(date1, DATE_YYYYMMDD);
+        String dateStr2 = getDate(date2, DATE_YYYYMMDD);
+        System.out.println("getDate(): " + dateStr1);
+        System.out.println("getDate(): " + dateStr2);
+
+        String longToString = longToString(new Date().getTime(), DATE_YYYYMMDD);
+        System.out.println("longToString(): " + longToString);
+
+        String after3Year = DateUtils.getDateAfterAddDays(date1, 3, DateUtils.DATE, Calendar.YEAR);
+        String after3Month = DateUtils.getDateAfterAddDays(date1, 3, DateUtils.DATE, Calendar.MONTH);
+        String after3Day = DateUtils.getDateAfterAddDays(date1, -3, DateUtils.DATE, Calendar.DATE);
+        String after3Hour = DateUtils.getDateAfterAddDays(date1, 3, DateUtils.DATE_FULL_TIME, Calendar.HOUR);
+        String after3Minute = DateUtils.getDateAfterAddDays(date1, 3, DateUtils.DATE_FULL_TIME, Calendar.MINUTE);
+        String after3Second = DateUtils.getDateAfterAddDays(date1, 3, DateUtils.DATE_FULL_TIME, Calendar.SECOND);
+        System.out.println("3年后" +after3Year);
+        System.out.println("3月后" +after3Month);
+        System.out.println("3日后" +after3Day);
+        System.out.println("3小时后" +after3Hour);
+        System.out.println("3分钟后" +after3Minute);
+        System.out.println("3秒后" +after3Second);
+
+        int betweenDay = getBetweenDay(date1, date2);
+        System.out.println("相差："+betweenDay);
+
+
+        int numForDateToLastDay = getNumForDateToLastDay(date1);
+        System.out.println("指定时间离指定时间所在月份的月底还剩："+numForDateToLastDay);
+
+        int numDayOfMonth = getNumDayOfMonth(date1);
+        System.out.println("指定时间是指定时间月份的第 "+numDayOfMonth+"天");
+
+
+        int dayNumForDate = getDayNumForDate(date1);
+        System.out.println("指定时间所在月份的天数 "+dayNumForDate);
+
+
+        String dayOfWeek = getDayOfWeek(dateStr1, DATE_YYYYMMDD);
+        System.out.println(dayOfWeek);
 
 
     }
